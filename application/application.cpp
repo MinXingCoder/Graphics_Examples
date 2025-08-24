@@ -74,8 +74,18 @@ void Application::beginFrame()
     ImGui_ImplOpenGL2_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
+    // 去除边框
+    ImGuiWindowFlags flags =
+        ImGuiWindowFlags_NoTitleBar |
+        ImGuiWindowFlags_NoResize |
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoScrollbar |
+        ImGuiWindowFlags_NoBackground;
 
-    ImGui::Begin("SoftRender");
+    ImVec2 screeSize = ImGui::GetIO().DisplaySize;
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
+    ImGui::SetNextWindowSize(screeSize);
+    ImGui::Begin("SoftRender", nullptr, flags);
 }
 
 void Application::endFrame()
