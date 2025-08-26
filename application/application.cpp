@@ -5,6 +5,7 @@
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl2.h"
+#include "../gpu/frameBuffer.h"
 #include <GLFW/glfw3.h>
 #include <stdio.h>
 
@@ -21,6 +22,8 @@ static void glfw_error_callback(int error, const char* description)
 {
     fprintf(stderr, "GLFW Error %d: %s\n", error, description);
 }
+
+static GLuint gImageTexture;
 
 bool Application::initApplication(const uint32_t& width, const uint32_t& height)
 {
@@ -49,8 +52,28 @@ bool Application::initApplication(const uint32_t& width, const uint32_t& height)
     ImGui_ImplGlfw_InitForOpenGL(mWindow, true);
     ImGui_ImplOpenGL2_Init();
 
+    if(!mFrameBuffer)
+    {
+        mFrameBuffer = new FrameBuffer(mWidth, mHeight, nullptr);
+        memset(mFrameBuffer->mColorBuffer, 0, sizeof(RGBA) * mWidth * mHeight);
+    }
+
+    InitTexture();
+
     return true;
 }
+
+void Application::InitTexture()
+{
+    glGenTextures(1, &gImageTexture);
+    glBindTexture(GL_TEXTURE_2D, gImageTexture);
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
+}
+
 
 void Application::close()
 {
@@ -60,6 +83,9 @@ void Application::close()
 
     glfwDestroyWindow(mWindow);
     glfwTerminate();
+
+    if(mFrameBuffer)
+        delete mFrameBuffer;
 }
 
 bool Application::peekMessage()
@@ -101,6 +127,13 @@ void Application::endFrame()
     glfwSwapBuffers(mWindow);
 }
 
+void Application::show()
+{
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA,
+                GL_UNSIGNED_BYTE, mFrameBuffer->mColorBuffer);
+    ImGui::Image((ImTextureID)(intptr_t)gImageTexture, ImVec2(mWidth, mHeight));
+}
+
 uint32_t Application::getWidth() const
 {
     return mWidth;
@@ -109,4 +142,9 @@ uint32_t Application::getWidth() const
 uint32_t Application::getHeight() const
 {
     return mHeight;
+}
+
+void* Application::getFrameBuffer() const
+{
+    return (void*)mFrameBuffer;
 }
