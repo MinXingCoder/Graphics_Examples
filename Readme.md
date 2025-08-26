@@ -6,6 +6,8 @@
 
 * 支持 macos, windows
 
+* cmake 构建
+
 # 示例
 
 ## 马赛克
