@@ -22,6 +22,8 @@ public:
 
     void drawPoint(const uint32_t& x, const uint32_t& y, const RGBA& color);
 
+    void drawLine(const Point& p1, const Point& p2);
+
 private:
 
     FrameBuffer* mFrameBuffer { nullptr };

@@ -13,3 +13,7 @@
 ## 马赛克
 
 ![马赛克](./pic/1.webp)
+
+## Brensenham 直线绘制算法
+
+![Brensenham](./pic/2.webp)

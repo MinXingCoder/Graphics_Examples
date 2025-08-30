@@ -2,6 +2,7 @@
 // Created by scc on 2025/8/24.
 //
 #pragma once
+#include <cstdint>
 
 #define PI                3.14159265358979323
 #define DEG2RAD(theta)    (0.01745329251994329 * (theta))
@@ -20,4 +21,11 @@ struct RGBA
     {
         mR = r; mG = g; mB = b; mA = a;
     }
+};
+
+struct Point
+{
+    int32_t x;
+    int32_t y;
+    RGBA color;
 };

@@ -2,6 +2,7 @@
 // Created by scc on 2025/8/26.
 //
 #include "gpu.h"
+#include "raster.h"
 #include <algorithm>
 
 GPU* GPU::getInstance()
@@ -28,6 +29,19 @@ void GPU::clear()
 
 void GPU::drawPoint(const uint32_t& x, const uint32_t& y, const RGBA& color)
 {
-    uint32_t pixelPos = (mFrameBuffer->mHeight - y) * mFrameBuffer->mWidth + x;
+    if(x >= mFrameBuffer->mWidth || y >= mFrameBuffer->mHeight)
+        return;
+    uint32_t pixelPos = (mFrameBuffer->mHeight - 1 - y) * mFrameBuffer->mWidth + x;
     mFrameBuffer->mColorBuffer[pixelPos] = color;
+}
+
+void GPU::drawLine(const Point& p1, const Point& p2)
+{
+    std::vector<Point> results;
+    Raster::rasterizeLine(results, p1, p2);
+
+    for(int i = 0; i < results.size(); ++i)
+    {
+        drawPoint(results[i].x, results[i].y, results[i].color);
+    }
 }
