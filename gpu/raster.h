@@ -16,4 +16,6 @@ public:
         const Point& v0,
         const Point& v1
     );
+
+    static void interpolantLine(const Point& v0, const Point& v1, Point& target);
 };

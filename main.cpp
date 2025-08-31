@@ -9,8 +9,8 @@ void render()
 {
     sgl->clear();
 
-    Point p1{100, 100};
-    Point p2{500, 600};
+    Point p1{100, 100, {255, 0, 0, 255}};
+    Point p2{500, 600, {0, 255, 0, 255}};
 
     sgl->drawLine(p1, p2);
 }
