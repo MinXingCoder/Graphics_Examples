@@ -17,3 +17,7 @@
 ## Brensenham 直线绘制算法
 
 ![Brensenham](./pic/2.webp)
+
+## 插值算法
+
+![插值算法](./pic/3.webp)     
